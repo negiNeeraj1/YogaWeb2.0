@@ -14,15 +14,16 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
+    // Local development origins
     'http://localhost:5173',  // Vite default port (admin panel - local)
     'http://localhost:3000',  // Client frontend (local)
     'http://localhost:5174',  // Alternative Vite port (local)
     'http://127.0.0.1:5173',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5174',
-    // Add your production frontend URLs here when deployed
-    // 'https://your-admin-frontend.onrender.com',
-    // 'https://your-client-frontend.onrender.com',
+    // Production frontend URLs
+    'https://yogaweb2-0-admin.onrender.com',  // Admin frontend
+    'https://yogaweb2-0-frontend2-0.onrender.com',  // Client frontend
 ];
 
 // app.use(cors({
@@ -52,6 +53,17 @@ app.use(cors({
             return;
         }
         
+        // In production, allow HTTPS origins from Render/Vercel/etc
+        // Check if it's a production HTTPS origin
+        const isProductionOrigin = origin.startsWith('https://');
+        
+        // Allow all HTTPS origins in production (for deployed frontends)
+        if (isProductionOrigin) {
+            console.log(`✅ Allowing production origin: ${origin}`);
+            callback(null, true);
+            return;
+        }
+        
         // In production or for specific origins
         if (allowedOrigins.includes(origin)) {
             callback(null, true);
@@ -60,7 +72,6 @@ app.use(cors({
             console.error(`   Allowed origins: ${allowedOrigins.join(', ')}`);
             console.error(`   NODE_ENV: ${process.env.NODE_ENV || 'development (not set)'}`);
             console.error(`   Is localhost: ${isLocalhost}`);
-            console.error(`   Is development: ${isDevelopment}`);
             callback(new Error(`Not allowed by CORS. Origin "${origin}" is not in the allowed list.`), false);
         }
     }
@@ -80,9 +91,9 @@ app.use(session({
         collectionName: 'sessions'
     }),
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production (HTTPS only)
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict', // 'none' for cross-origin in production
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
