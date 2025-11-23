@@ -14,12 +14,15 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-    'http://localhost:5173',  // Vite default port (admin panel)
-    'http://localhost:3000',  // Client frontend
-    'http://localhost:5174',  // Alternative Vite port
+    'http://localhost:5173',  // Vite default port (admin panel - local)
+    'http://localhost:3000',  // Client frontend (local)
+    'http://localhost:5174',  // Alternative Vite port (local)
     'http://127.0.0.1:5173',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5174',
+    // Add your production frontend URLs here when deployed
+    // 'https://your-admin-frontend.onrender.com',
+    // 'https://your-client-frontend.onrender.com',
 ];
 
 // app.use(cors({

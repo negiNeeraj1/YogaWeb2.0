@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = "https://yogaweb2-0-backendpart.onrender.com/api";
 
 export const SignUpUser = async (userData) => {
   try {
