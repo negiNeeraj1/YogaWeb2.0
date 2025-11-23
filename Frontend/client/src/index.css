@@ -1,0 +1,37 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Poppins";
+
+}
+
+.btn-all {
+    background-color: #e97963;
+}
+
+.btn-hover:hover {
+    background-color: #d2604a;
+}
+
+.filter-button {
+    border: 1px solid #e97963;
+    color: #e97963;
+    font-weight: 600;
+}
+
+.filter-button:hover {
+    background-color: #d2604a;
+}
+
+.bgcAll {
+    background-color: #f8fbfa;
+}
+
+.contact-right {
+    margin-top: 2rem;
+}
+
+
