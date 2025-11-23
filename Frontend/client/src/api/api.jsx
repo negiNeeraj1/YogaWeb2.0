@@ -57,8 +57,13 @@ export const GetClasses = async () => {
     });
     return response.data;
   } catch (error) {
-    // throw error.response ? error.response.data : new Error("Network Error");
-    console.log("Request Failed");
+    console.error("Error fetching classes:", error.response?.data || error.message);
+    // Return error response so client can handle it
+    return {
+      success: false,
+      message: error.response?.data?.message || "Failed to fetch classes",
+      data: [],
+    };
   }
 };
 

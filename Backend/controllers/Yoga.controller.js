@@ -30,6 +30,8 @@ const calculateTotalClassDays = (startDate, endDate, daysOfWeek) => {
 
 export const createClass = async (req, res) => {
     try {
+      console.log("Received request body:", JSON.stringify(req.body, null, 2));
+      
       if (!req.file) {
         return res.status(400).json({
           success: false,
@@ -42,6 +44,21 @@ export const createClass = async (req, res) => {
         public_id: req.file.filename,
         url: req.file.path,
       };
+      
+      // Validate schedule exists
+      if (!req.body.schedule) {
+        return res.status(400).json({
+          success: false,
+          message: "Schedule information is required",
+        });
+      }
+      
+      if (!req.body.schedule.startDate || !req.body.schedule.endDate) {
+        return res.status(400).json({
+          success: false,
+          message: "Start date and end date are required",
+        });
+      }
       
       const startDate = new Date(req.body.schedule.startDate);
       const endDate = new Date(req.body.schedule.endDate);
@@ -83,18 +100,27 @@ export const createClass = async (req, res) => {
       
       const savedClass = await newClass.save();
       
+      console.log("Class created successfully:", savedClass._id);
+      
       res.status(201).json({
         success: true,
         data: savedClass,
       });
     } catch (error) {
+      console.error("Error creating class:", error);
+      
       if (req.file) {
-        await cloudinary.uploader.destroy(req.file.filename);
+        try {
+          await cloudinary.uploader.destroy(req.file.filename);
+        } catch (destroyError) {
+          console.error("Error destroying uploaded file:", destroyError);
+        }
       }
       
       res.status(500).json({
         success: false,
-        message: error.message,
+        message: error.message || "Failed to create class",
+        error: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       });
     }
  };

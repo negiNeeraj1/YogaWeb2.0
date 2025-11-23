@@ -200,10 +200,22 @@ const ClassesPage = () => {
 
   const retrieveClasses = async () => {
     try {
-      const response = await GetClasses(); 
-      setAvailableClasses(response.data);
+      const response = await GetClasses();
+      
+      if (!response.success) {
+        console.error("Error fetching classes:", response.message);
+        setAvailableClasses([]);
+        return;
+      }
+      
+      if (response.data && Array.isArray(response.data)) {
+        setAvailableClasses(response.data);
+      } else {
+        setAvailableClasses([]);
+      }
     } catch (error) {
       console.error("Error fetching classes:", error);
+      setAvailableClasses([]);
     } finally {
       setIsLoading(false);
     }

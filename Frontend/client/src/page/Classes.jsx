@@ -74,6 +74,19 @@ const YogaClasses = () => {
     const fetchClasses = async () => {
       try {
         const response = await GetClasses();
+        
+        if (!response.success) {
+          setError(new Error(response.message || "Failed to fetch classes"));
+          setLoading(false);
+          return;
+        }
+        
+        if (!response.data || !Array.isArray(response.data)) {
+          setError(new Error("Invalid response format"));
+          setLoading(false);
+          return;
+        }
+        
         const transformedClasses = response.data.map((batch, index) => ({
           id: batch._id,
           title: batch.status,
@@ -96,6 +109,7 @@ const YogaClasses = () => {
         setClasses(transformedClasses);
         setLoading(false);
       } catch (err) {
+        console.error("Error in fetchClasses:", err);
         setError(err);
         setLoading(false);
       }

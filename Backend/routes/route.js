@@ -66,6 +66,7 @@ import {
 // import { subscriptionController } from '../controllers/Subscription.controller.js';
 import { getContactForm, submitForm } from '../controllers/contact.controller.js';
 import uploadImage, { uploadVideo , handleUploadError } from '../config/multerCloudinary.js';
+import { parseFormData } from '../middleware/parseFormData.js';
 
 const router = express.Router();
 
@@ -89,10 +90,10 @@ router.put('/admin/update/:userId', updateAdminProfile);
 router.get('/admin/dashboard-analytics', getAdminDashboardAnalytics);
 
 // Yoga Class Routes
-router.post('/classes/create', uploadImage.single('image'), createClass);
+router.post('/classes/create', uploadImage.single('image'), parseFormData, createClass);
 router.get('/classes/get', getAllClasses);
 router.get('/classes/get/:id', getClassById);
-router.put('/classes/update/:id', uploadImage.single('image'), updateClass);
+router.put('/classes/update/:id', uploadImage.single('image'), parseFormData, updateClass);
 router.delete('/classes/:id', deleteClass);
 router.post('/classes/:classId/videos',
     uploadVideo.single('video'),
