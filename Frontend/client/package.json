@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "start": "node server.js",
     "install:force": "npm install --legacy-peer-deps"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "@react-spring/web": "^9.7.5",
     "aos": "^2.3.4",
     "axios": "^1.7.8",
+    "express": "^4.21.1",
     "framer-motion": "^11.17.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.460.0",

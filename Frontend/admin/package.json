@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server.js"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "axios": "^1.7.8",
+    "express": "^4.21.1",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.462.0",
     "react": "^18.3.1",
